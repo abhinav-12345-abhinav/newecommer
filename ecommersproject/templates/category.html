@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+     {% if category %}
+          {{ category.description|truncatewords:155 }}
+     {% else %}
+          Welcome to AK store where you can buys different items......
+     {% endif %}
+{% endblock %}
+{% block title %}
+     {% if category %}
+          {{ category.name }} - AK store
+     {% else %}
+            see our new collection - AK store
+     {% endif %}
+     {% endblock %}
+
+{% block content %}
+{% if category %}
+
+<div>
+   <div class="row my_row_class">
+       <div class="mx-auto">
+     <p><a href="{% url 'shop:allProdCat' %}">Our Product collections</a></p>
+   </div>
+       </div>
+ </div>
+  {% endif %}
+<div class="mx-auto">
+      {% if category %}
+      <img class="my_image" src="{{category.image.url}}" width="1000px;" alt="{{category.name}}">
+</div>
+  <br>
+<div>
+      <h1 class="text-center my_title">{{category.name}}</h1>
+      <p class="text-justify">{{category.description}}</p>
+</div>
+      {% else %}
+<div>
+     <img class="my_image my_image_padding" src="{% static 'img/abc.png' %}" alt="our products" width="1250px;">
+</div>
+<br>
+<div>
+        <h2 class="text-center my_title">Our products Collections</h2>
+        <p class="text-justify">JEE Main is one of the most crucial exams for those who wish to get into the top engineering colleges in India. NTA, i.e. the National Testing Agency conducts this exam every year. The syllabus for JEE Main comprises the topics covered in the 11th and 12th Physics, Chemistry, and Mathematics. To get through this competitive exam, aspirants should revise all the topics covered in the syllabus thoroughly. Hence, the subject experts at Vedantu have come up with JEE Main revision notes for Physics, Chemistry, and Mathematics for the reference of aspiring students.
+
+</p>
+      </div>
+      {% endif %}
+<div class="container">
+    <div class="row mx-auto">
+        {% for product in products.object_list %}
+          <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+              <div class="card text-center" style="width:287px;">
+                  <br>
+                  <a href="{{product.get_url}}"><img class="card-img-top my_image" style="width:287px; height:180px;" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                   <div class="card-body">
+                       <h4>{{product.name}}</h4>
+                       <p>{{product.price}}</p>
+                   </div>
+              </div>
+          </div>
+        {% endfor %}
+    </div>
+    <div class="ma-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
